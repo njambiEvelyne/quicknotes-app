@@ -80,6 +80,10 @@ button {
   margin-top: 0.4rem;
 }
 
+#clear-all-button {
+  margin-top: 0.75rem;
+}
+
 button {
   color: #fff;
   background: #176b70;
