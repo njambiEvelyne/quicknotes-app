@@ -78,3 +78,5 @@ noteForm.addEventListener("submit", (event) => {
   noteInput.value = "";
   render();
 });
+
+render();
