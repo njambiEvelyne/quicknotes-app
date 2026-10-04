@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickNotes</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>QuickNotes</h1>
+    <p>A little space for all the things on your mind.</p>
+  </header>
+
+  <main>
+    <section aria-labelledby="add-note-heading">
+      <h2 id="add-note-heading">Add a note</h2>
+      <form id="note-form">
+        <label for="note-input">Your note</label>
+        <input
+          id="note-input"
+          name="note"
+          type="text"
+          maxlength="201"
+          placeholder="What would you like to remember?"
+        >
+        <label for="note-category">Category</label>
+        <select id="note-category" name="category">
+          <option value="Personal">Personal</option>
+          <option value="Work">Work</option>
+          <option value="Study">Study</option>
+        </select>
+        <button type="submit">Add Note</button>
+      </form>
+      <p id="error-message" role="alert"></p>
+    </section>
+
+    <section aria-labelledby="your-notes-heading">
+      <h2 id="your-notes-heading">Your notes</h2>
+      <label for="search-input">Search notes</label>
+      <input id="search-input" type="search" placeholder="Search your notes...">
+      <p id="note-count" aria-live="polite"></p>
+      <ul id="notes-list" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>QuickNotes — capture a thought, whenever it comes.</p>
+  </footer>
+</body>
+</html>
