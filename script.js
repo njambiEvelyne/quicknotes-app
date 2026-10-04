@@ -4,13 +4,29 @@ const noteCategory = document.querySelector("#note-category");
 const notesList = document.querySelector("#notes-list");
 const noteCount = document.querySelector("#note-count");
 const errorMessage = document.querySelector("#error-message");
+const searchInput = document.querySelector("#search-input");
+const clearAllButton = document.querySelector("#clear-all-button");
+const savedNotes = localStorage.getItem("quicknotes");
 
-let notes = [];
+let notes = savedNotes === null ? [] : JSON.parse(savedNotes);
+
+if (!Array.isArray(notes)) {
+  throw new TypeError("Saved notes must be an array.");
+}
+
+function saveNotes() {
+  localStorage.setItem("quicknotes", JSON.stringify(notes));
+}
 
 function render() {
   notesList.replaceChildren();
 
-  notes.forEach((note) => {
+  const query = searchInput.value.trim().toLowerCase();
+  const visibleNotes = notes.filter((note) =>
+    note.text.toLowerCase().includes(query)
+  );
+
+  visibleNotes.forEach((note) => {
     const noteItem = document.createElement("li");
     noteItem.classList.add(
       "note-card",
@@ -37,6 +53,7 @@ function render() {
     deleteButton.setAttribute("aria-label", `Delete note: ${note.text}`);
     deleteButton.addEventListener("click", () => {
       notes = notes.filter((item) => item.id !== note.id);
+      saveNotes();
       render();
     });
 
@@ -44,6 +61,12 @@ function render() {
     noteItem.append(noteText, noteMeta);
     notesList.append(noteItem);
   });
+
+  if (query && visibleNotes.length === 0) {
+    const noResults = document.createElement("li");
+    noResults.textContent = "No notes match your search.";
+    notesList.append(noResults);
+  }
 
   if (notes.length === 0) {
     noteCount.textContent = "You have no notes yet.";
@@ -75,8 +98,19 @@ noteForm.addEventListener("submit", (event) => {
     createdAt: new Date().toLocaleString()
   });
 
+  saveNotes();
   noteInput.value = "";
   render();
+});
+
+searchInput.addEventListener("input", render);
+
+clearAllButton.addEventListener("click", () => {
+  if (confirm("Delete all notes?")) {
+    notes = [];
+    saveNotes();
+    render();
+  }
 });
 
 render();
